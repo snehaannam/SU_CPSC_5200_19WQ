@@ -6,13 +6,13 @@ namespace restapi.Models
 {
     public class TimecardLine
     {
-        public int Week { get; set; }
+        public int? Week { get; set; }
 
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
-        public DayOfWeek Day { get; set; }
+        public DayOfWeek? Day { get; set; }
 
-        public float Hours { get; set; }
+        public float? Hours { get; set; }
 
         public string Project { get; set; }
     }
@@ -32,7 +32,7 @@ namespace restapi.Models
             Project = line.Project;
 
             Recorded = DateTime.UtcNow;
-            workDate = FirstDateOfWeekISO8601(line.Year, line.Week).AddDays((int)line.Day - 1);
+            workDate = FirstDateOfWeekISO8601(line.Year.GetValueOrDefault(), line.Week.GetValueOrDefault()).AddDays((int)line.Day - 1);
             UniqueIdentifier = Guid.NewGuid();
         }
 

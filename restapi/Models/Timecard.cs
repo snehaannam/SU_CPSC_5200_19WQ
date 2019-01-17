@@ -84,6 +84,13 @@ namespace restapi.Models
                         Relationship = ActionRelationship.RecordLine,
                         Reference = $"/timesheets/{Identity.Value}/lines"
                     });
+
+                    links.Add(new ActionLink() {
+                        Method = Method.Delete,
+                        Type = ContentTypes.Deletion,
+                        Relationship = ActionRelationship.Delete,
+                        Reference = $"/timesheets/{Identity.Value}/"
+                    });
                 
                     break;
 
@@ -116,7 +123,12 @@ namespace restapi.Models
                     break;
 
                 case TimecardStatus.Cancelled:
-                    // terminal state, nothing possible here
+                   links.Add(new ActionLink() {
+                        Method = Method.Delete,
+                        Type = ContentTypes.Deletion,
+                        Relationship = ActionRelationship.Delete,
+                        Reference = $"/timesheets/{Identity.Value}/"
+                    });
                     break;
             }
 
@@ -165,5 +177,26 @@ namespace restapi.Models
 
             return annotatedLine;
         }
+
+        public AnnotatedTimecardLine ReplaceLine(AnnotatedTimecardLine annotatedLine , TimecardLine newline)
+        {
+            annotatedLine.Week = newline.Week;
+            annotatedLine.Year = newline.Year;
+            annotatedLine.Day = newline.Day;
+            annotatedLine.Hours = newline.Hours;
+            annotatedLine.Project = newline.Project;
+            return annotatedLine;
+        }
+
+        public AnnotatedTimecardLine UpdateLine(AnnotatedTimecardLine annotatedLine , TimecardLine newline)
+        {
+            if(newline.Week!=null) annotatedLine.Week = newline.Week;
+            if(newline.Year!=null) annotatedLine.Year = newline.Year;
+            if(newline.Day!=null) annotatedLine.Day = newline.Day;
+            if(newline.Hours!=null)annotatedLine.Hours = newline.Hours;
+            if(newline.Project!=null)annotatedLine.Project = newline.Project;
+            return annotatedLine;
+        }
+
     }
 }
